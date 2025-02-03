@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Exercise Tracker | freeCodeCamp</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="shortcut icon" href="https://cdn.freecodecamp.org/universal/favicons/favicon.ico"  type="image/x-icon" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+
+    <div id="info-container">
+      <div id="info">
+        <button id="close" onclick="hideInfo()"><i class="fa-solid fa-xmark"></i></button>
+
+        <h3>Create a New User</h3>
+        <p>Enter a custom username to create a new user. After creation, you will receive a unique user ID, which is required for adding exercises.</p>
+        <p><strong>Example Result:</strong></p>
+        <code>
+          { "username": "jimmy", "_id": "67a0fb43d1d9a3936ef25b12" }
+        </code>
+
+        <h3>Add an Exercise</h3>
+        <p>When adding an exercise, use the unique user ID provided when you created your account.</p>
+        <p><strong>Example Result:</strong></p>
+        <code>
+          { "_id": "67a0fb43d1d9a3936ef25b12", "username": "jimmy", "date": "Sun Jan 26 2025", "duration": 60, "description": "Chest" }
+        </code>
+        <p><strong>Note:</strong> If you are an existing user and forgot your ID, enter your username in the "Create a New User" section. If your username already exists in the database, you will receive your original user ID.</p>
+        
+        <h3 id="line">View All Users</h3>
+        <code>ThisURL/api/users</code>
+        
+        <h3>View Your Exercise Logs</h3>
+        <code>ThisURL/api/users/:_id/exercises</code>
+        <p>Replace <strong>:_id</strong> with your unique user ID.</p>
+        
+        <h3>Retrieve a User’s Exercise Log</h3>
+        <code>ThisURL/api/users/:_id/logs?[from][&to][&limit]</code>
+        <p><strong>[ ] = Optional:</strong></p>
+        <p><strong>from, to</strong> = Date range (Format: yyyy-mm-dd)</p>
+        <p><strong>Limit</strong> = Number of logs to return</p>
+      </div>
+    </div>
+
+    <h1>Exercise Tracker</h1>
+    <div class="container">
+
+      <form id="form" action="/api/users" method="post">
+        <h2>Create New User</h2>
+        <input id="uname" type="text" name="username" placeholder="username" />
+        <input type="submit" value="Submit" />
+      </form>
+
+      <form action="/api/users/:_id/exercises" id="exercise-form" method="post">
+        <h2>Add Exercise</h2>
+        <input id="uid" type="text" name=":_id" placeholder="user Id" />
+        <input id="desc" type="text" name="description" placeholder="description" />
+        <input id="dur" type="text" name="duration" placeholder="duration (mins)" />
+        <input id="date" type="text" name="date" placeholder="date (yyyy-mm-dd)" />
+        <input type="submit" value="Submit" />
+      </form>
+
+      <button id="help" onclick="showInfo()"><i class="fa-solid fa-circle-question"></i> Help</button>
+
+    </div>
+
+    <script>
+      const info = document.getElementById("info-container");
+      info.style.display = "none";
+      const showInfo = () => {
+        info.style.display == "none" ? info.style.display = "flex" : null;
+      };
+      const hideInfo = () => {
+        info.style.display == "flex" ? info.style.display = "none" : null;
+      }
+    </script>
+
+    <script>
+      const exerciseForm = document.getElementById("exercise-form");
+
+      exerciseForm.addEventListener("submit", () => {
+        const userId = document.getElementById("uid").value;
+        exerciseForm.action = `/api/users/${userId}/exercises`;
+
+        exerciseForm.submit();
+      });
+    </script>
+    
+  </body>
+</html>
